@@ -76,7 +76,7 @@ const tail=()=>{upd();$("msg").textContent="";$("msg").className=""};
 $("phone").addEventListener("input",e=>{let d=e.target.value.replace(/\D/g,"");if(d.length===12&&d.startsWith("91"))d=d.slice(2);e.target.value=d.slice(0,10)});
 ids.forEach((id,i)=>{$(id).addEventListener(i>=5?"input":"change",()=>i>=6?tail():step(i))});
 const WHEN=["within_1_week","within_2_weeks","within_1_month","one_to_3_months","not_sure"];$("when").addEventListener("change",()=>tail());
-const T0=Date.now(),done=n=>$("f").replaceChildren(Object.assign(document.createElement("p"),{id:"msg",textContent:t("thanks").replace("{n}",n.split(" ")[0])}));
+const T0=Date.now(),done=n=>{document.querySelector(".lg").remove();$("f").replaceChildren(Object.assign(document.createElement("p"),{id:"msg",textContent:t("thanks").replace("{n}",n.split(" ")[0])}))};
 $("f").addEventListener("submit",async e=>{
   e.preventDefault();const m=$("msg"),b=$("go");
   if($("website").value||Date.now()-T0<4000){done($("name").value||"there");return}
