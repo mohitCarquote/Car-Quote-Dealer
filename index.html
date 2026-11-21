@@ -1,4 +1,21 @@
 <!doctype html>
+<<<<<<< HEAD
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071b3b" />
+    <meta name="description" content="Compare private on-road car quotes from nearby dealers with CarQuote." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <title>CarQuote — Drive Smarter. Buy Better.</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+=======
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CarQuote: get dealer quotes</title>
 <meta name="description" content="Choose your car and get an on-road price from a nearby dealer. Free for buyers.">
@@ -76,7 +93,7 @@ const tail=()=>{upd();$("msg").textContent="";$("msg").className=""};
 $("phone").addEventListener("input",e=>{let d=e.target.value.replace(/\D/g,"");if(d.length===12&&d.startsWith("91"))d=d.slice(2);e.target.value=d.slice(0,10)});
 ids.forEach((id,i)=>{$(id).addEventListener(i>=5?"input":"change",()=>i>=6?tail():step(i))});
 const WHEN=["within_1_week","within_2_weeks","within_1_month","one_to_3_months","not_sure"];$("when").addEventListener("change",()=>tail());
-const T0=Date.now(),done=n=>$("f").replaceChildren(Object.assign(document.createElement("p"),{id:"msg",textContent:t("thanks").replace("{n}",n.split(" ")[0])}));
+const T0=Date.now(),done=n=>{document.querySelector(".lg").remove();$("f").replaceChildren(Object.assign(document.createElement("p"),{id:"msg",textContent:t("thanks").replace("{n}",n.split(" ")[0])}))};
 $("f").addEventListener("submit",async e=>{
   e.preventDefault();const m=$("msg"),b=$("go");
   if($("website").value||Date.now()-T0<4000){done($("name").value||"there");return}
@@ -100,3 +117,4 @@ desc();document.querySelectorAll(".lg button").forEach(b=>b.setAttribute("aria-p
 document.querySelector(".lg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;lg=b.dataset.l;try{localStorage.setItem("lg",lg)}catch(x){}applyLang()});
 applyLang();
 </script></body></html>
+>>>>>>> 6cdef91a9eb82f1f7ebdfd91b945339fb481a2e7
