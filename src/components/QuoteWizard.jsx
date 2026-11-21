@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft, ArrowRight, Check, MapPin, CalendarDays, UserRound, Mail, MessageSquareText } from "lucide-react";
 import WhatsAppIcon from "./WhatsAppIcon";
 import StepProgress from "./StepProgress";
-import { brands, cities, modelsFor, modelInfo, lakh, inr, OFFICIAL, FUEL_ORDER, TIMELINES } from "../data";
+import { brands, cities, modelsFor, modelInfo, lakh, inr, officialUrl, FUEL_ORDER, TIMELINES } from "../data";
 import { SUPABASE } from "../config";
 import { variantFor, step2Ok } from "../quoteRules";
 import { useLang } from "../i18n";
@@ -70,7 +70,7 @@ export default function QuoteWizard({ step, setStep, navigate, form, setForm }) 
 
   const desc = model && (model.vf
     ? <p className="model-note">{model.d} {t("asof", { d: model.vf })}</p>
-    : <p className="model-note">{t("seeoff")} <a href={OFFICIAL[form.brand] || "#"} target="_blank" rel="noopener noreferrer">{t("offsite")}</a></p>);
+    : <p className="model-note">{t("seeoff")} <a href={officialUrl(form.brand, form.model) || "#"} target="_blank" rel="noopener noreferrer">{t("offsite")}</a></p>);
 
   return <main className="wizard-page">
     <div className="wizard-shell">

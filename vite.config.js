@@ -2,9 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // GitHub Pages serves the site from /Car-Quote-Dealer/, so production builds use that base path.
-// (Switch to "/" if the site moves to its own domain.) The dev server stays at "/".
-export default defineConfig(({ command }) => ({
-  base: command === "build" ? "/Car-Quote-Dealer/" : "/",
+// (Switch to "/" if the site moves to its own domain.) `vite preview` uses it too; the dev server stays at "/".
+export default defineConfig(({ command, isPreview }) => ({
+  base: command === "build" || isPreview ? "/Car-Quote-Dealer/" : "/",
   plugins: [react()],
   build: {
     rolldownOptions: {
