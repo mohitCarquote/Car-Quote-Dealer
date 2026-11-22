@@ -68,9 +68,8 @@ export default function QuoteWizard({ step, setStep, navigate, form, setForm }) 
     else submit();
   };
 
-  const desc = model && (model.vf
-    ? <p className="model-note">{model.d} {t("asof", { d: model.vf })}</p>
-    : <p className="model-note">{t("seeoff")} <a href={officialUrl(form.brand, form.model) || "#"} target="_blank" rel="noopener noreferrer">{t("offsite")}</a></p>);
+  // Always send buyers to the model's page on the manufacturer's site for features (no copied descriptions).
+  const desc = model && <p className="model-note">{t("seeoff")} <a href={officialUrl(form.brand, form.model) || "#"} target="_blank" rel="noopener noreferrer">{t("offsite")}</a></p>;
 
   return <main className="wizard-page">
     <div className="wizard-shell">
