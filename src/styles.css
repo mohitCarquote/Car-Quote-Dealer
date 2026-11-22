@@ -215,3 +215,94 @@ html[lang=hi] .hero h1{font-size:clamp(38px,4.4vw,60px);line-height:1.3}
   .popular-carousel .popular-card .car-image{height:170px}
   .carousel-btn.prev{left:-8px}.carousel-btn.next{right:-8px}
 }
+
+/* ---- Quote wizard: dark split layout (left pitch + white form card) ---- */
+.site-nav.over-wizard{position:absolute;top:0;left:0;right:0;background:transparent}
+.site-nav.over-wizard .mobile-nav{background:rgba(5,20,40,.97);backdrop-filter:blur(12px)}
+.wizard-page{position:relative;min-height:100vh;padding:122px max(calc((100vw - 1240px)/2),5.5%) 60px;background:radial-gradient(ellipse at 85% 95%,rgba(28,170,120,.35) 0%,transparent 45%),radial-gradient(ellipse at 15% 20%,#0f3a4a 0%,transparent 55%),linear-gradient(160deg,#061a2e 0%,#0a2a3a 55%,#0c3a3a 100%);color:#fff}
+.wizard-shell{position:relative;z-index:1;max-width:none;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:48px;align-items:stretch}
+.wizard-side{display:flex;flex-direction:column;min-height:100%;padding-top:24px}
+.wizard-side .eyebrow{color:#4fe0a6;font-size:11px;letter-spacing:1.6px;margin-bottom:16px}
+.wizard-side h1{font:800 clamp(40px,4.4vw,62px)/1.02 Manrope,sans-serif;letter-spacing:-2.4px;margin:0 0 20px}
+.wizard-side h1 em{font-style:normal;color:#4fe0a6}
+.wizard-side p{font-size:16px;line-height:1.6;color:#d5e2ee;max-width:360px;margin:0}
+.side-rule{display:block;width:44px;height:3px;border-radius:3px;background:#2fd394;margin:30px 0 8px}
+.side-trust{list-style:none;padding:0;margin:auto 0 0;padding-top:40px;display:flex;gap:26px;flex-wrap:wrap}
+.side-trust li{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:#c9d7e4}
+.side-trust svg{width:18px;height:18px;color:#4fe0a6;flex:none}
+.side-trust strong{display:block;color:#fff;font-size:13px;font-weight:700}
+
+.wizard-card{border:0;border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,.35);color:var(--navy);padding:28px 0 0}
+.stepper{position:relative;display:grid;grid-template-columns:repeat(3,1fr);margin:0 26px;padding-bottom:6px}
+.stepper-line{position:absolute;top:14px;left:16.66%;right:16.66%;height:3px;border-radius:3px;background:#e1e7ee}
+.stepper-line span{display:block;height:100%;border-radius:3px;background:#2fbf85;transition:width .35s}
+.stepper-item{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center}
+.stepper-dot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:800 13px Manrope,sans-serif;background:#c9d2dc;color:#fff;box-shadow:0 0 0 5px #fff}
+.stepper-label{font-size:13px;font-weight:600;color:#56677e}
+.stepper-item.current .stepper-dot,.stepper-item.done .stepper-dot{background:#2fbf85}
+.stepper-item.current .stepper-dot{box-shadow:0 0 0 5px #fff,0 0 0 8px rgba(47,191,133,.18)}
+.stepper-item.current .stepper-label{color:#1f9e6c;font-weight:700}
+.wizard-content{padding:26px 32px 22px;min-height:0}
+.wizard-content .eyebrow{color:#22a874;font-size:12px;letter-spacing:1.4px;margin-bottom:10px}
+.wizard-content h2{font-size:28px;letter-spacing:-.9px;margin-bottom:6px}
+.wizard-content .muted{font-size:14px;margin-bottom:20px}
+.selected-car{gap:16px;padding:12px 16px;background:#f5f8fb;border:1px solid #e3e9f0;border-radius:16px;margin-bottom:6px}
+.mini-car{width:104px;height:64px;flex:none;border-radius:10px;overflow:hidden;background:#e7eef5;color:#7d8ea3;font-size:inherit}
+.mini-car img{width:100%;height:100%;object-fit:cover;display:block}
+.selected-car-text{flex:1;min-width:0;padding-left:16px;border-left:1px solid #dde4ec}
+.selected-car-text strong{font-size:15px}
+.selected-car-text>span{font-size:13px;color:#4f6078;margin-top:4px}
+.selected-car .model-note{font-size:11.5px;margin-top:3px}
+.change-btn{border:0;background:none;color:#1f9e6c;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:7px;flex:none;padding:6px}
+.change-btn:hover{color:#167a53}
+.field-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:4px 22px}
+.field-label{font-size:13px;font-weight:600;color:#2a3a52;margin:16px 0 8px}
+.choice-pill{padding:10px 26px;font-size:14px;font-weight:600;border-color:#d7dfe8;color:#3b4b62}
+.choice-pill.active{border-color:#2fbf85;background:#eafaf2;color:#16865a}
+.wizard-content select{height:48px;padding:0 46px 0 16px;font-size:14px;font-weight:600;border-radius:12px;background-color:#fff;border-color:#d9e1ea;color:#1b2b45}
+.wizard-content .price-help{margin-top:14px}
+.input-wrap{height:50px;border-radius:12px}
+.input-wrap input{font-size:14px}
+.wizard-actions{border-top:1px solid #edf1f5;padding:18px 32px 22px;margin:0}
+.privacy-note{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:#4f6078}
+.privacy-note svg{color:#2fbf85}
+.action-btns{display:flex;gap:10px;align-items:center}
+.wizard-actions .btn{min-width:0}
+.wizard-actions .btn-primary{padding:15px 24px;font-size:15px;border-radius:12px;background:#2fa877;box-shadow:0 10px 24px rgba(47,168,119,.28)}
+.btn-ghost{background:none;color:#4f6078;padding:15px 14px;font-size:14px}
+.btn-ghost:hover{color:var(--navy);transform:none;box-shadow:none}
+
+@media(max-width:980px){
+  .wizard-shell{grid-template-columns:1fr;gap:26px}
+  .wizard-side{padding-top:0}
+  .wizard-side p{max-width:none}
+  .side-rule{display:none}
+  .side-trust{margin-top:20px}
+}
+@media(max-width:650px){
+  .wizard-page{padding:100px 13px 40px}
+  .wizard-side h1{font-size:36px;letter-spacing:-1.5px;margin-bottom:12px}
+  .wizard-side p{font-size:14px}
+  .side-trust{gap:14px 20px}
+  .side-trust li{font-size:11px}
+  .wizard-card{padding-top:22px;border-radius:20px}
+  .stepper{margin:0 8px}
+  .stepper-label{font-size:11px}
+  .wizard-content{padding:22px 18px 18px}
+  .wizard-content h2{font-size:23px}
+  .field-grid{grid-template-columns:1fr;gap:0}
+  .selected-car{gap:10px;padding:10px}
+  .mini-car{width:70px;height:48px}
+  .selected-car-text{padding-left:10px}
+  .change-btn{font-size:12px;padding:4px}
+  .wizard-actions{display:flex;flex-direction:column-reverse;align-items:stretch;gap:14px;padding:16px 18px 20px}
+  .privacy-note{justify-content:center}
+  .action-btns .btn-primary{flex:1;width:auto;margin-top:0}
+  .wizard-actions .btn{margin-top:0}
+}
+
+/* Wizard background photo: fills the left side behind the pitch, fading into the dark page */
+.wizard-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,#000 40%,transparent 72%);mask-image:linear-gradient(90deg,#000 40%,transparent 72%)}
+.wizard-bg img{position:absolute;bottom:0;left:0;width:min(880px,54vw);height:auto;max-width:none;display:block;filter:brightness(.62) saturate(.85);-webkit-mask-image:radial-gradient(ellipse 62% 62% at 50% 58%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 62% 62% at 50% 58%,#000 55%,transparent 100%)}
+.wizard-bg:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#061a2e 0%,rgba(6,26,46,.78) 22%,rgba(6,26,46,.35) 55%,rgba(6,26,46,.25) 75%,rgba(6,26,46,.85) 100%)}
+@media(max-width:980px){.wizard-bg img{top:0;bottom:auto;left:50%;width:auto;height:100%;transform:translateX(-50%)}.wizard-bg{inset:0 0 auto 0;height:520px;-webkit-mask-image:linear-gradient(180deg,#000 60%,transparent 100%);mask-image:linear-gradient(180deg,#000 60%,transparent 100%)}.wizard-bg:after{background:linear-gradient(180deg,rgba(6,26,46,.85),rgba(6,26,46,.6) 60%,rgba(6,26,46,.9))}.side-trust{padding-top:0}}

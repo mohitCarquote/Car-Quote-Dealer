@@ -15,7 +15,7 @@ export default function Navbar({ navigate, route, compact = false }) {
   useEffect(() => setOpen(false), [route]); // close the mobile menu whenever the screen changes
   const links = [["popular-cars", t("nav_cars")], ["how-it-works", t("nav_how")], ["faqs", t("nav_faq")]];
   const go = id => e => { e.preventDefault(); setOpen(false); navigate("home"); setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 60); };
-  return <header className={`site-nav ${route === "home" ? "over-hero" : ""}`}>
+  return <header className={`site-nav ${route === "home" ? "over-hero" : ""} ${["brand", "details", "contact"].includes(route) ? "over-wizard" : ""}`}>
     <button className="brand-lockup" onClick={() => navigate("home")} aria-label="CarQuote home">
       <span className="brand-mark"><CarFront size={25}/></span><span>Car<span>Quote</span></span>
     </button>

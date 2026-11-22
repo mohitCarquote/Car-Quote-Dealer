@@ -58,5 +58,5 @@ function Site() {
   else page = <Home navigate={navigate} form={form} setForm={setForm}/>;
 
   const isWizard = ["brand","details","contact"].includes(route);
-  return <div className="app-shell"><Navbar navigate={navigate} route={route} compact={isWizard || route === "submitted" || !!pages[route]}/><Suspense fallback={<main className="page-loading" aria-busy="true"/>}>{page}</Suspense>{!isWizard && <Footer navigate={navigate}/>}</div>;
+  return <div className="app-shell"><Navbar navigate={navigate} route={route} compact={route === "submitted" || !!pages[route]}/><Suspense fallback={<main className="page-loading" aria-busy="true"/>}>{page}</Suspense>{!isWizard && <Footer navigate={navigate}/>}</div>;
 }

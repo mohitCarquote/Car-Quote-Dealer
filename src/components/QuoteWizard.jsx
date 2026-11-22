@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { ArrowLeft, ArrowRight, Check, MapPin, CalendarDays, UserRound, Mail, MessageSquareText } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, MapPin, CalendarDays, UserRound, Mail, MessageSquareText, ShieldCheck, Zap, BadgeCheck, PencilLine, CarFront } from "lucide-react";
 import WhatsAppIcon from "./WhatsAppIcon";
 import StepProgress from "./StepProgress";
-import { brands, cities, modelsFor, modelInfo, lakh, inr, officialUrl, FUEL_ORDER, TIMELINES } from "../data";
+import { brands, cities, cars, modelsFor, modelInfo, lakh, officialUrl, FUEL_ORDER, TIMELINES } from "../data";
 import { SUPABASE } from "../config";
 import { variantFor, step2Ok } from "../quoteRules";
 import { useLang } from "../i18n";
@@ -10,6 +10,7 @@ import { useLang } from "../i18n";
 const T0 = Date.now(); // spam trap: real people take longer than 4 seconds to fill the form
 const PHONE = /^[6-9]\d{9}$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SIDE_CAR = "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1100&q=80";
 
 
 export default function QuoteWizard({ step, setStep, navigate, form, setForm }) {
@@ -71,33 +72,57 @@ export default function QuoteWizard({ step, setStep, navigate, form, setForm }) 
   // Always send buyers to the model's page on the manufacturer's site for features (no copied descriptions).
   const desc = model && <p className="model-note">{t("seeoff")} <a href={officialUrl(form.brand, form.model) || "#"} target="_blank" rel="noopener noreferrer">{t("offsite")}</a></p>;
 
-  return <main className="wizard-page">
-    <div className="wizard-shell">
-      <div className="wizard-heading"><button className="back-link" onClick={() => step === 1 ? navigate("home") : setStep(step - 1)}><ArrowLeft size={17}/> {t("back")}</button><span className="eyebrow">{t("w_eyebrow")}</span><h1>{t("w_h1")}</h1><p>{t("w_p")}</p></div>
-      <div className="wizard-card">
-        <div className="step-head"><div className="step-title">{t("step", { n: step })} <span>{t("of3")}</span></div><StepProgress step={step} labels={[t("lab1"), t("lab2"), t("lab3")]}/></div>
+  const labels = [t("lab1"), t("lab2"), t("lab3")];
+  const photo = cars.find(c => c.brand === form.brand && c.model === form.model)?.image;
+  const carCard = model && <div className="selected-car">
+    <div className="mini-car">{photo ? <img src={photo} alt=""/> : <CarFront size={30}/>}</div>
+    <div className="selected-car-text"><strong>{form.brand} {form.model}</strong>
+      {variant && <span>{`${variant[0]} · ${gear(variant[2])} · ₹${lakh(variant[3])} ${t("lakh")}`}</span>}
+      {desc}</div>
+    <button type="button" className="change-btn" onClick={() => setStep(1)}>{t("change")} <PencilLine size={15}/></button>
+  </div>;
 
-        {step === 1 && <section className="wizard-content"><span className="eyebrow">{t("s1_eyebrow")}</span><h2>{t("s1_h")}</h2><p className="muted">{t("s1_p")}</p>
+  return <main className="wizard-page">
+    <div className="wizard-bg" aria-hidden="true"><img src={SIDE_CAR} alt=""/></div>
+    <div className="wizard-shell">
+      <aside className="wizard-side">
+        <span className="eyebrow">{t("w_eyebrow")}</span>
+        <h1>{t("w_h1a")}<br/><em>{t("w_h1b")}</em> {t("w_h1c")}</h1>
+        <p>{t("w_p")}</p>
+        <span className="side-rule" aria-hidden="true"/>
+        <ul className="side-trust">
+          <li><ShieldCheck/><span><strong>{t("st1a")}</strong>{t("st1b")}</span></li>
+          <li><Zap/><span><strong>{t("st2a")}</strong>{t("st2b")}</span></li>
+          <li><BadgeCheck/><span><strong>{t("st3a")}</strong>{t("st3b")}</span></li>
+        </ul>
+      </aside>
+
+      <div className="wizard-card">
+        <StepProgress step={step} labels={labels}/>
+
+        {step === 1 && <section className="wizard-content"><span className="eyebrow">{t("step_of", { n: step })}</span><h2>{t("s1_h")}</h2><p className="muted">{t("s1_p")}</p>
           <div className="brand-grid">{brands.map(b => <button key={b.name} className={`brand-option ${form.brand === b.name ? "selected" : ""}`} onClick={() => chooseBrand(b.name)} aria-pressed={form.brand === b.name}><span className="brand-symbol" style={{ color: b.color }}>{b.mark}</span><strong>{b.name}</strong>{form.brand === b.name && <span className="selected-tick"><Check size={12}/></span>}</button>)}</div>
           {form.brand && <><label className="field-label" htmlFor="wModel">{t("sel_model")}</label><select id="wModel" value={form.model} onChange={e => chooseModel(e.target.value)}><option value="">{t("c_model")}</option>{modelsFor(form.brand).map(m => <option key={m} value={m}>{m}</option>)}</select></>}
         </section>}
 
-        {step === 2 && model && <section className="wizard-content"><span className="eyebrow">{t("s2_eyebrow")}</span><h2>{t("s2_h")}</h2><p className="muted">{t("s2_p")}</p>
-          <div className="selected-car"><div className="mini-car">🚙</div><div><strong>{form.brand} {form.model}</strong>{desc}</div></div>
-          <span className="field-label">{t("fuel")}</span>
-          <div className="choice-row">{fuels.map(f => <button key={f} className={`choice-pill ${fuel === f ? "active" : ""}`} aria-pressed={fuel === f} onClick={() => chooseFuel(f)}>{t("f_" + f)}</button>)}</div>
-          <label className="field-label" htmlFor="wVariant">{t("variant")}</label>
-          <select id="wVariant" value={variant ? form.variant : ""} disabled={!fuel} onChange={e => setForm(p => ({ ...p, fuel, variant: e.target.value }))}><option value="">{t("c_variant")}</option>{variants.map(v => <option key={v[0] + v[2]} value={`${v[0]}|${v[2]}`}>{`${v[0]} · ${gear(v[2])} · ₹${lakh(v[3])} ${t("lakh")}`}</option>)}</select>
-          {variant && <p className="variant-price">{t("approx")}{inr(variant[3])}</p>}
+        {step === 2 && model && <section className="wizard-content"><span className="eyebrow">{t("step_of", { n: step })}</span><h2>{t("s2_h")}</h2><p className="muted">{t("s2_p")}</p>
+          {carCard}
+          <div className="field-grid">
+            <div><span className="field-label">{t("fuel")}</span>
+              <div className="choice-row">{fuels.map(f => <button key={f} className={`choice-pill ${fuel === f ? "active" : ""}`} aria-pressed={fuel === f} onClick={() => chooseFuel(f)}>{t("f_" + f)}</button>)}</div></div>
+            <div><label className="field-label" htmlFor="wVariant">{t("variant")}</label>
+              <select id="wVariant" value={variant ? form.variant : ""} disabled={!fuel} onChange={e => setForm(p => ({ ...p, fuel, variant: e.target.value }))}><option value="">{t("c_variant")}</option>{variants.map(v => <option key={v[0] + v[2]} value={`${v[0]}|${v[2]}`}>{`${v[0]} · ${gear(v[2])} · ₹${lakh(v[3])} ${t("lakh")}`}</option>)}</select></div>
+            <div><label className="field-label" htmlFor="wCity"><MapPin size={15}/> {t("city")}</label>
+              <select id="wCity" value={form.city || ""} onChange={e => update("city", e.target.value)}><option value="">{t("c_city")}</option>{cities.map(([s, c]) => <option key={c} value={`${s}|${c}`}>{t("city_" + c)}</option>)}<option value="other">{t("c_other")}</option></select>
+              {form.city === "other" && <><label className="input-wrap"><MapPin/><input placeholder={t("other")} maxLength={60} autoComplete="address-level2" value={form.otherCity || ""} onChange={e => update("otherCity", e.target.value)}/></label><p className="soon-note">{t("soon")}</p></>}</div>
+            <div><label className="field-label" htmlFor="wWhen"><CalendarDays size={15}/> {t("when")}</label>
+              <select id="wWhen" value={form.timeline || ""} onChange={e => update("timeline", e.target.value)}><option value="">{t("c_when")}</option>{TIMELINES.map(k => <option key={k} value={k}>{t("w_" + k)}</option>)}</select></div>
+          </div>
           <details className="price-help"><summary>{t("sum")}</summary><p>{t("exp")}</p></details>
-          <label className="field-label" htmlFor="wCity"><MapPin size={15}/> {t("city")}</label>
-          <select id="wCity" value={form.city || ""} onChange={e => update("city", e.target.value)}><option value="">{t("c_city")}</option>{cities.map(([s, c]) => <option key={c} value={`${s}|${c}`}>{t("city_" + c)}</option>)}<option value="other">{t("c_other")}</option></select>
-          {form.city === "other" && <><label className="input-wrap"><MapPin/><input placeholder={t("other")} maxLength={60} autoComplete="address-level2" value={form.otherCity || ""} onChange={e => update("otherCity", e.target.value)}/></label><p className="soon-note">{t("soon")}</p></>}
-          <label className="field-label" htmlFor="wWhen"><CalendarDays size={15}/> {t("when")}</label>
-          <select id="wWhen" value={form.timeline || ""} onChange={e => update("timeline", e.target.value)}><option value="">{t("c_when")}</option>{TIMELINES.map(k => <option key={k} value={k}>{t("w_" + k)}</option>)}</select>
         </section>}
 
-        {step === 3 && <section className="wizard-content"><span className="eyebrow">{t("s3_eyebrow")}</span><h2>{t("s3_h")}</h2><p className="muted">{t("s3_p")}</p>
+        {step === 3 && <section className="wizard-content"><span className="eyebrow">{t("step_of", { n: step })}</span><h2>{t("s3_h")}</h2><p className="muted">{t("s3_p")}</p>
+          {carCard}
           <div className="hp" aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={trap} onChange={e => setTrap(e.target.value)}/></label></div>
           <div className="form-fields">
             <label className={`input-wrap ${errors.name ? "invalid" : ""}`}><UserRound/><input placeholder={t("ph_name")} autoComplete="name" maxLength={80} value={form.name || ""} onChange={e => update("name", e.target.value)}/></label>{errors.name && <span className="field-error">{errors.name}</span>}
@@ -111,9 +136,14 @@ export default function QuoteWizard({ step, setStep, navigate, form, setForm }) 
 
         {errors.step && !(step === 1 ? form.brand && form.model : step === 2 ? step2Ok({ ...form, fuel }) : true) && <p className="field-error step-error">{errors.step}</p>}
         {status.msg && <p className={`form-status ${status.busy ? "" : "err"}`} role="status">{status.msg}</p>}
-        <div className="wizard-actions"><span className="privacy-note"><span className="lock-dot">⌑</span> {t("pnote")}</span><button className="btn btn-primary" disabled={status.busy} onClick={goNext}>{step === 3 ? t("go") : t("cont")} <ArrowRight size={17}/></button></div>
+        <div className="wizard-actions">
+          <span className="privacy-note"><ShieldCheck size={18}/> {t("pnote")}</span>
+          <div className="action-btns">
+            {step > 1 && <button type="button" className="btn btn-ghost" onClick={() => setStep(step - 1)}><ArrowLeft size={16}/> {t("back")}</button>}
+            <button className="btn btn-primary" disabled={status.busy} onClick={goNext}>{step === 3 ? t("go") : t("next", { label: labels[step] })} <ArrowRight size={17}/></button>
+          </div>
+        </div>
       </div>
-      <div className="wizard-trust"><span><Check/> {t("tr1")}</span><span><Check/> {t("tr2")}</span><span><Check/> {t("tr3")}</span></div>
     </div>
   </main>;
 }
